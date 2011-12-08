@@ -65,6 +65,12 @@ class DataAPI(object):
         
         return deputado
 
+    def get_estados(self):
+        return self.__session__.query(Deputado.estado).group_by(Deputado.estado).all()
+
+    def get_partidos(self):
+        return self.__session__.query(Deputado.partido).group_by(Deputado.partido).all()
+
     def remover_deputado(self, deputado):
         self.__session__.delete(deputado)
         self.__session__.commit()
