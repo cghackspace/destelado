@@ -77,4 +77,5 @@ class FaultsSpider(BaseSpider):
         for r in reg.finditer(response.body):
             dict_gasto = r.groupdict()
             gasto = Gasto(dep.id, 2011, dict_gasto['description'], '', Decimal(dict_gasto['gasto2011'].replace('.','').replace(',','.')))
-            self.api.inserir_gasto(gasto)
+            if gasto.valor:
+                self.api.inserir_gasto(gasto)
