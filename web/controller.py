@@ -7,8 +7,12 @@ app = Flask(__name__)
 def root():
     return render_template('index.html')
 
-@app.route("/list/deputados")
+@app.route("/deputados")
 def list_deputados():
+    pass
+
+@app.route("/deputados/<id>")
+def get_deputado(dep_id):
     pass
 
 if __name__ == "__main__":
