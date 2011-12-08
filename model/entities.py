@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Date, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import mapper, sessionmaker
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
