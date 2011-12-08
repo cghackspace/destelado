@@ -54,12 +54,28 @@ class FaultsSpider(BaseSpider):
                         request = Request(urljoin(self.base_url, '@presencas.php?id=%s' % id), callback=self.parse_deputy_assiduity)
                         request.meta['dep'] = dep
                         yield request
+                        
+                        request = Request(urljoin(self.base_url, '@uso_verbas_als.php?uf=16&id=%s' % id), callback=self.parse_deputy_costs)
+                        request.meta['dep'] = dep
+                        yield request
                  
     def parse_deputy_assiduity(self, response):
         hxs = HtmlXPathSelector(response)
         dep = response.meta['dep']
 
         reg = re.compile('<tr>\s*<td>(?P<date>.*?)\s*<td>[\d]+\s*<td>(?P<present>.*?)\s*<td>(?P<misses>.*?)\s*<td>')
+        for r in reg.finditer(response.body):
+            dict_assiduidade = r.groupdict()
+            mes, ano = dict_assiduidade['date'].split('/')
+            date = datetime.date(int(ano), int(mes), 1)
+            assiduidade = Assiduidade(dep.id, date, dict_assiduidade['present'], dict_assiduidade['misses'])
+            self.api.inserir_assiduidade(assiduidade)
+
+    def parse_deputy_costs(self, response):
+        hxs = HtmlXPathSelector(response)
+        dep = response.meta['dep']
+        #FIXME implement me!
+        reg = re.compile('') # model: <td id=prim_col>Emissão Bilhete Aéreo *        <td nowrap><p class=dir>R$ 881,32       <td nowrap><p class=dir>R$ 0,00     <td nowrap><p class=dir>R$ 0,00     <td nowrap><p class=dir>R$ 0,00
         for r in reg.finditer(response.body):
             dict_assiduidade = r.groupdict()
             mes, ano = dict_assiduidade['date'].split('/')

@@ -44,20 +44,20 @@ class Gasto(Base):
 
     id = Column(Integer, primary_key=True)
     id_deputado = Column(Integer, ForeignKey('deputado.id'))
-    data = Column(Date)
+    ano = Column(Numeric)
     descricao = Column(String)
     categoria = Column(String)
     valor = Column(Numeric)
 
-    def __init__(self, id_deputado, data, descricao, categoria, valor):
+    def __init__(self, id_deputado, ano, descricao, categoria, valor):
         self.id_deputado = id_deputado
-        self.data = data
+        self.ano = ano
         self.descricao = descricao
         self.categoria = categoria
         self.valor = valor
 
     def __repr__(self):
-        return 'Na categoria %s o deputado %d gastou R$%.2f em %s' % (self.categoria, self.id_deputado, self.valor, self.data)
+        return 'Na categoria %s o deputado %d gastou R$%.2f em %s' % (self.categoria, self.id_deputado, self.valor, self.ano)
 
 if __name__ == '__main__':
     some_engine = create_engine('sqlite:///test.db')
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     assiduidade = Assiduidade(0, datetime.date(2011, 1, 1), 10, 20)
 
-    gasto = Gasto(0, datetime.date(2011, 1, 1), 'Passeio com a familia', 'Viagem', 1500.45)
+    gasto = Gasto(0, 2011, 'Passeio com a familia', 'Viagem', 1500.45)
 
     session.add(dep)
     session.commit()
