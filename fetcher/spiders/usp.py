@@ -39,15 +39,15 @@ class FaultsSpider(BaseSpider):
                 reg = re.compile('<a class="listapar" href="(?P<url>.*?)">(?P<name>[\w\s]*[\w]+)\s*\(<b>[\w\s]+</b>\)\s-\s(?P<party>.*?)\/(?P<state>.*?)</a><br>', flags=re.U)
                 for r in reg.finditer(div.extract()):
                     dict_deputy = r.groupdict()
-                    db_deputy = self.api.get_deputado_por_nome(dict_deputy['name'])
-                    if not db_deputy:
-                        dep = Deputado(dict_deputy['name'], dict_deputy['state'], dict_deputy['party'])
-                        self.api.inserir_deputado(dep)
-                    else:
-                        dep = db_deputy[0]
                     
-                    
-                    if dep.estado in settings['STATE_TO_FILTER']:
+                    if dict_deputy['state'] in settings['STATE_TO_FILTER']:
+                        db_deputy = self.api.get_deputado_por_nome(dict_deputy['name'])
+                        if not db_deputy:
+                            dep = Deputado(dict_deputy['name'], dict_deputy['state'], dict_deputy['party'])
+                            self.api.inserir_deputado(dep)
+                        else:
+                            dep = db_deputy[0]
+
                         id = urlparse.parse_qs(urlparse.urlparse(dict_deputy['url']).query).get('id', [0])[0]
                         if not id:
                             continue
@@ -65,4 +65,4 @@ class FaultsSpider(BaseSpider):
             mes, ano = dict_assiduidade['date'].split('/')
             date = datetime.date(int(ano), int(mes), 1)
             assiduidade = Assiduidade(dep.id, date, dict_assiduidade['present'], dict_assiduidade['misses'])
-            self.api.registrar_assiduidade(assiduidade)
+            self.api.inserir_assiduidade(assiduidade)
