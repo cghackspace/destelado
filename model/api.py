@@ -26,6 +26,13 @@ class DataAPI(object):
         deputado.assiduidades = self.__session__.query(Assiduidade)\
                 .filter(Assiduidade.id_deputado == id).all()
 
+        # Troquei o sum(map(... por um for, passando de O(4n) para O(2n)
+        deputado.total_presencas = 0
+        deputado.total_faltas = 0
+        for assiduidade : assiduidades:
+            deputado.total_presencas += assiduidade.presencas
+            deputado.total_faltas += assiduidades.faltas
+            
         deputado.total_presencas = sum(map(lambda x : x.presencas,\
                 deputado.assiduidades))
 
