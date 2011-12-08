@@ -33,7 +33,7 @@ class FaultsSpider(BaseSpider):
         for div in hxs.select('//div[@id="contem_boxes"]'):
             titulo = div.select('.//div[@id="contem_titulo"]/text()').extract()[0]
 
-            if titulo != u'Câmara dos Deputados/BR':
+            if titulo.endswith(u'mara dos Deputados/BR'):
                 continue
             else:
                 reg = re.compile('<a class="listapar" href="(?P<url>.*?)">(?P<name>[\w\s]*[\w]+)\s*\(<b>[\w\s]+</b>\)\s-\s(?P<party>.*?)\/(?P<state>.*?)</a><br>', flags=re.U)
