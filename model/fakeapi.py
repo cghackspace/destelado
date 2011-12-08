@@ -14,3 +14,12 @@ def get_deputados():
     d.id = 3
     deputados.append( d )
     return deputados
+
+def get_deputado(dep_id):
+    deputados = get_deputados()
+    for d in deputados:
+        if d.id == dep_id:
+            return d
+
+    return None
+
