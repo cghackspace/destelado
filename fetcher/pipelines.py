@@ -21,20 +21,3 @@ class StateFilterPipeline(object):
             return item
         else:
             raise DropItem('Not in PARAIBA motherfucker')
-
-class JsonWriterPipeline(object):
-
-    def __init__(self):
-        self.faults = {}
-
-    def process_item(self, item, spider):
-        # Here be dragons 
-        if item['deputy'] not in self.faults:
-            self.faults[item['deputy']] = []
-        item_dic = dict(item)
-        del item_dic['deputy']
-        self.faults[item['deputy']].append(item_dic)
-        line = json.dumps(self.faults)
-        self.file = open('items.json', 'wb')
-        self.file.write(line)
-        return item

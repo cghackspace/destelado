@@ -9,15 +9,3 @@ class TransparencyItem(Item):
     # define the fields for your item here like:
     # name = Field()
     pass
-
-class DeputyItem(Item):
-    url = Field()
-    state = Field()
-    name = Field()
-    party = Field()
-
-class FaultItem(Item):
-    deputy = Field()
-    date = Field()
-    misses = Field()
-    present = Field()
