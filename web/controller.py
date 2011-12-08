@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-from model import fakeapi
+from model import api
 
 app = Flask(__name__)
 
@@ -10,12 +10,14 @@ def root():
 
 @app.route("/deputados/")
 def list_deputados():
-    deputados = fakeapi.get_deputados()
+    d_api = api.DataAPI()
+    deputados = d_api.get_deputados()
     return render_template('deputado/list.html', deputados=deputados)
 
 @app.route("/deputados/<int:dep_id>/")
 def get_deputado(dep_id):
-    deputado = fakeapi.get_deputado(dep_id)
+    d_api = api.DataAPI()
+    deputado = d_api.get_deputado(dep_id)
     if deputado:
       return render_template('deputado/show.html', deputado=deputado)
     else:
