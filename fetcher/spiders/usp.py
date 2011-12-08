@@ -8,7 +8,7 @@ from scrapy.conf import settings
 from scrapy import log
 
 from urlparse import urljoin
-from transparency.items import *
+from fetcher.items import *
 
 import tempfile
 import os
@@ -28,10 +28,11 @@ class FaultsSpider(BaseSpider):
 
         for div in hxs.select('//div[@id="contem_boxes"]'):
             titulo = div.select('.//div[@id="contem_titulo"]/text()').extract()[0]
-            if titulo != u'Cвmara dos Deputados/BR':
+
+            if titulo != u'Câmara dos Deputados/BR':
                 continue
             else:
-                reg = re.compile('<a class="listapar" href="(?P<url>.*?)">(?P<name>[\w\s]+)\s*\(<b>[\w\s]+</b>\)\s-\s(?P<party>.*?)\/(?P<state>.*?)</a><br>', flags=re.U)
+                reg = re.compile('<a class="listapar" href="(?P<url>.*?)">(?P<name>[\w\s]*[\w]+)\s*\(<b>[\w\s]+</b>\)\s-\s(?P<party>.*?)\/(?P<state>.*?)</a><br>', flags=re.U)
                 for r in reg.finditer(div.extract()):
                     dep = DeputyItem()
                     dep.update(r.groupdict())
@@ -42,9 +43,7 @@ class FaultsSpider(BaseSpider):
                         request = Request(urljoin(self.base_url, '@presencas.php?id=%s' % id), callback=self.parse_deputy_assiduity)
                         request.meta['dep'] = dep
                         yield request
-                    else:
-                        print 'unparsed:', dep['name'], dep['state']
-
+                 
     def parse_deputy_assiduity(self, response):
         hxs = HtmlXPathSelector(response)
         dep = response.meta['dep']

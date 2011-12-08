@@ -6,14 +6,14 @@
 #     http://doc.scrapy.org/topics/settings.html
 #
 
-BOT_NAME = 'transparency'
+BOT_NAME = 'fetcher'
 BOT_VERSION = '1.0'
 
-SPIDER_MODULES = ['transparency.spiders']
-NEWSPIDER_MODULE = 'transparency.spiders'
-DEFAULT_ITEM_CLASS = 'transparency.items.TransparencyItem'
+SPIDER_MODULES = ['fetcher.spiders']
+NEWSPIDER_MODULE = 'fetcher.spiders'
+DEFAULT_ITEM_CLASS = 'fetcher.items.TransparencyItem'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
-ITEM_PIPELINES = ['transparency.pipelines.JsonWriterPipeline']
+ITEM_PIPELINES = ['fetcher.pipelines.JsonWriterPipeline']
 
 STATE_TO_FILTER = ['PB']

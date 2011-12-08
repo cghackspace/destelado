@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -24,9 +25,16 @@ class StateFilterPipeline(object):
 class JsonWriterPipeline(object):
 
     def __init__(self):
-        self.file = open('items.json', 'wb')
+        self.faults = {}
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item)) + "\n"
+        # Here be dragons 
+        if item['deputy'] not in self.faults:
+            self.faults[item['deputy']] = []
+        item_dic = dict(item)
+        del item_dic['deputy']
+        self.faults[item['deputy']].append(item_dic)
+        line = json.dumps(self.faults)
+        self.file = open('items.json', 'wb')
         self.file.write(line)
         return item
