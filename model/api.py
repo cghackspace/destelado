@@ -13,6 +13,13 @@ class DataAPI(object):
         if not deputado.nome : raise "Nome invalido"
         if not deputado.estado : raise "Nome invalido"
         if not deputado.partido : raise "Nome invalido"
+    
+    def __validar_gasto__(self, gasto):
+        if not gasto.id_deputado : raise "Gasto nao associado a um deputado"
+        if not gasto.data : raise "Data invalida"
+        if not gasto.valor : raise "Valor invalido"
+        if not gasto.descricao : raise "Descricao invalido"
+        if not gasto.categoria : raise "Categoria invalida"
        
     def get_deputados(self):
         return self.__session__.query(Deputado).all()
@@ -52,6 +59,27 @@ class DataAPI(object):
         self.__session__.commit()
 
         return deputado
+
+    def inserir_gasto(self, gasto):
+        self.__validar_gasto__(gasto)
+        
+        self.__session__.add(gasto)
+        self.__session__.commit()
+        
+        return gasto
+    
+    def remover_gasto(self, gasto):
+        self.__session__.delete(gasto)
+        
+        self.__session__.commit()
+    
+    def atualizar_gasto(self, gasto):
+        self.__validar_gasto__(gasto)
+        
+        self.__session__.merge(gasto)
+        self.__session__.commit()
+        
+        return gasto
 
 if __name__ == '__main__':
     api = DataAPI()
