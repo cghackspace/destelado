@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8">
-    <title>destelado &raquo; {% marker "title" %}</title>
+
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -49,14 +49,12 @@
     
 
 	<!-- BEGIN TEMPLATE-->
-		<body>
-
+		
 		  <div id="content">
-		    {% marker "content" %}
+		    {% block content %} {% endblock%}
 		  </div>
 
-		</body>
-
+		
 
 
 	<!-- END TEMPLATE -->

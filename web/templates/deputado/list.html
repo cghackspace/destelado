@@ -1,14 +1,6 @@
-{% extends "../template" %}
-{% marker "title" set "Deputados" %}
+{% extends "template.html" %}
 
-<CTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-<head>
-    <title>Deputados</title>
-</head>
-<body>
-
-	{% block "content" %}
+	{% block content %}
 
 	    <table>
 		<tr>
@@ -22,14 +14,11 @@
 			<td><a href="deputado/{{ deputado.id }}">{{ deputado.nome }}</a></td>
 			<td>{{ deputado.partido }} - {{ deputado.estado }}</td>
 			<td>{{ deputado.gasto }}</td>
-			<td>{{ deputado.total_presencas / (deputado.total_faltas + deputado.total_presencas) }} &#37;</td>			
+			<td>{{ deputado.total_presencas / (deputado.total_faltas + deputado.total_presencas) }} &#37;</td>	
+		
 		</tr>
 	    {% endfor %}
 	    </table>
 
 	{% endblock %}
-
-
-</body>
-</html>
 
