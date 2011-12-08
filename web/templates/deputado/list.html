@@ -10,14 +10,22 @@
 
 	{% block "content" %}
 
-	    <ul id="navigation">
+	    <table>
+		<tr>
+			<th>Nome</th>
+			<th>Filiação</th>
+			<th>Assiduidade</th>
+			<th>Gastos</th>
+		</tr>
 	    {% for deputado in deputados %}
-		<li>
-			<h3><a href="deputado/{{ deputado.id }}">{{ deputado.nome }}</a></h3><br/>
-			<h2>{{ deputado.partido }} - {{ deputado.estado }}</h2>
-		</li>
+		<tr>
+			<td><a href="deputado/{{ deputado.id }}">{{ deputado.nome }}</a></td>
+			<td>{{ deputado.partido }} - {{ deputado.estado }}</td>
+			<td>{{ deputado.gasto }}</td>
+			<td>{{ deputado.assiduidade }}</td>			
+		</tr>
 	    {% endfor %}
-	    </ul>
+	    </table>
 
 	{% endblock %}
 
