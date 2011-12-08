@@ -8,6 +8,11 @@ class DataAPI(object):
     def __init__(self, db_url="sqlite:///test.db"):
         self.__engine__ = create_engine(db_url)
         self.__session__ = sessionmaker(bind = self.__engine__)()
+
+    def __validar_deputado__(self, deputado):
+        if not deputado.nome : raise "Nome invalido"
+        if not deputado.estado : raise "Nome invalido"
+        if not deputado.partido : raise "Nome invalido"
        
     def get_deputados(self):
         return self.__session__.query(Deputado).all()
@@ -26,9 +31,32 @@ class DataAPI(object):
 
         return deputado
 
+    def inserir_deputado(self, deputado):
+        self.__validar_deputado__(deputado)
+
+        self.__session__.add(deputado)
+        self.__session__.commit()
+
+        return deputado
+
+    def atualizar_deputado(self, deputado):
+        self.__validar_deputado__(deputado)
+
+        self.__session__.merge(deputado)
+        self.__session__.commit()
+
+        return deputado
+
 if __name__ == '__main__':
     api = DataAPI()
 
     print api.get_deputados()
     print api.get_deputado(5).assiduidades
     print api.get_deputado(5).gastos
+
+    dep = api.inserir_deputado(Deputado("Cassio", "PB", "Pilantras SA"))
+    print dep
+    dep.partido = "MG"
+    dep = api.atualizar_deputado(dep)
+    print dep
+    
