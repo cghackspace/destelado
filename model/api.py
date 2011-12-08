@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from entities import Assiduidade, Deputado, Gasto, Base
 
 from sqlalchemy import create_engine
@@ -18,16 +20,22 @@ class DataAPI(object):
         self.__session__ = sessionmaker(bind = self.__engine__)()
 
     def __validar_deputado__(self, deputado):
-        if not deputado.nome : raise "Nome invalido"
-        if not deputado.estado : raise "Nome invalido"
-        if not deputado.partido : raise "Nome invalido"
+        if not deputado.nome : raise "Nome inválido"
+        if not deputado.estado : raise "Nome inválido"
+        if not deputado.partido : raise "Nome inválido"
     
+    def __validar_gasto__(self, assiduidade):
+        if not assiduidade.id_deputado : raise "Assiduidade não associada a um deputado"
+        if not assiduidade.data : raise "Data inválida"
+        if not assiduidade.presencas : raise "Presenças inválida"
+        if not assiduidade.faltas : raise "Faltas inválida"
+
     def __validar_gasto__(self, gasto):
-        if not gasto.id_deputado : raise "Gasto nao associado a um deputado"
-        if not gasto.data : raise "Data invalida"
-        if not gasto.valor : raise "Valor invalido"
-        if not gasto.descricao : raise "Descricao invalido"
-        if not gasto.categoria : raise "Categoria invalida"
+        if not gasto.id_deputado : raise "Gasto não associado a um deputado"
+        if not gasto.ano : raise "Ano inválido"
+        if not gasto.valor : raise "Valor inválido"
+        if not gasto.descricao : raise "Descricao inválido"
+        if not gasto.categoria : raise "Categoria inválida"
        
     def get_deputados(self, order_by_assiduidade = False):
         return self.__session__.query(Deputado).all()
@@ -71,7 +79,7 @@ class DataAPI(object):
 
     def get_deputado_por_nome(self, nome):
         deputado = self.__session__.query(Deputado)\
-                .filter(Deputado.nome == nome).all()
+                                   .filter(Deputado.nome == nome).all()
         
         return deputado
 
@@ -117,6 +125,8 @@ class DataAPI(object):
         return gasto
 
     def inserir_assiduidade(self, assiduidade):
+        self.__validar_assiduidade__(assiduidade)
+
         self.__session__.merge(assiduidade)
         self.__session__.commit()
 
