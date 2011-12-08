@@ -20,22 +20,21 @@ class DataAPI(object):
         self.__session__ = sessionmaker(bind = self.__engine__)()
 
     def __validar_deputado__(self, deputado):
-        if not deputado.nome : raise "Nome inválido"
-        if not deputado.estado : raise "Nome inválido"
-        if not deputado.partido : raise "Nome inválido"
+        if not deputado.nome : raise ValueError, "Nome inválido"
+        if not deputado.estado : raise ValueError, "Nome inválido"
+        if not deputado.partido : raise ValueError, "Nome inválido"
     
     def __validar_assiduidade__(self, assiduidade):
-        if not assiduidade.id_deputado : raise "Assiduidade não associada a um deputado"
-        if not assiduidade.data : raise "Data inválida"
-        if not assiduidade.presencas : raise "Presenças inválida"
-        if not assiduidade.faltas : raise "Faltas inválida"
+        if not assiduidade.id_deputado : raise ValueError, "Assiduidade não associada a um deputado"
+        if not assiduidade.data : raise ValueError, "Data inválida"
+        if not assiduidade.presencas : raise ValueError, "Presenças inválida"
+        if not assiduidade.faltas : raise ValueError, "Faltas inválida"
 
     def __validar_gasto__(self, gasto):
-        if not gasto.id_deputado : raise "Gasto não associado a um deputado"
-        if not gasto.ano : raise "Ano inválido"
-        if not gasto.valor : raise "Valor inválido"
-        if not gasto.descricao : raise "Descricao inválido"
-        if not gasto.categoria : raise "Categoria inválida"
+        if not gasto.id_deputado : raise ValueError, "Gasto não associado a um deputado"
+        if not gasto.ano : raise ValueError, "Ano inválido"
+        if not gasto.valor : raise ValueError, "Valor inválido"
+        if not gasto.descricao : raise ValueError, "Descricao inválido"
        
     def get_deputados(self, order_by_assiduidade = False):
         return self.__session__.query(Deputado).all()
