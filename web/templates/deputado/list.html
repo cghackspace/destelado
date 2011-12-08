@@ -1,23 +1,30 @@
 {% extends "template.html" %}
 
-	{% block content %}
+{% block content %}
+    <h2>Lista de deputados</h2>
+    <table class="zebra-striped">
+        <thead>
+            <tr>
+                <th class="yellow header">Nome</th>
+                <th class="blue header filiacao">Filiação</th>
+                <th class="green header">Assiduidade</th>
+                <th class="red header">Gastos</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for deputado in deputados %}
+            <tr>
+                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.nome }}</a></td>
+                <td>{{ deputado.partido }} - {{ deputado.estado }}</td>
+                <td class="frequency"><strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</td>  
+                <td>{{ deputado.total_gastos() }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
 
-	    <table class="zebra-striped">
-		<tr>
-			<th>Nome</th>
-			<th>Filiação</th>
-			<th>Assiduidade</th>
-			<th>Gastos</th>
-		</tr>
-	    {% for deputado in deputados %}
-		<tr>
-			<td><a href="/deputados/{{ deputado.id }}">{{ deputado.nome }}</a></td>
-			<td>{{ deputado.partido }} - {{ deputado.estado }}</td>
-			<td>{{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }}</td>	
-			<td>{{ deputado.total_gastos() }}</td>
-		</tr>
-	    {% endfor %}
-	    </table>
-
-	{% endblock %}
+{% block scripts_libs %}
+<script src="/static/js/libs/jquery.tablesorter.min.js"></script>
+{% endblock %}
 
