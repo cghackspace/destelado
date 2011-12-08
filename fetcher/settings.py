@@ -14,6 +14,4 @@ NEWSPIDER_MODULE = 'fetcher.spiders'
 DEFAULT_ITEM_CLASS = 'fetcher.items.TransparencyItem'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
 
-ITEM_PIPELINES = ['fetcher.pipelines.JsonWriterPipeline']
-
 STATE_TO_FILTER = ['PB']
