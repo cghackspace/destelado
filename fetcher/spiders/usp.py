@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
 
+from scrapy import log
 from scrapy.spider import BaseSpider
 from scrapy.selector import HtmlXPathSelector
 from scrapy.http import Request
 from scrapy.conf import settings
 
-from scrapy import log
-
-from urlparse import urljoin
-from fetcher.items import *
 from model.api import DataAPI
 from model.entities import *
+
+from urlparse import urljoin
+from decimal import Decimal
+
 import datetime
-
-import tempfile
-import os
 import re
-
 import urlparse
 
 
@@ -33,7 +30,7 @@ class FaultsSpider(BaseSpider):
         for div in hxs.select('//div[@id="contem_boxes"]'):
             titulo = div.select('.//div[@id="contem_titulo"]/text()').extract()[0]
 
-            if titulo.endswith(u'mara dos Deputados/BR'):
+            if not titulo.endswith(u'mara dos Deputados/BR'):
                 continue
             else:
                 reg = re.compile('<a class="listapar" href="(?P<url>.*?)">(?P<name>[\w\s]*[\w]+)\s*\(<b>[\w\s]+</b>\)\s-\s(?P<party>.*?)\/(?P<state>.*?)</a><br>', flags=re.U)
@@ -72,13 +69,12 @@ class FaultsSpider(BaseSpider):
             self.api.inserir_assiduidade(assiduidade)
 
     def parse_deputy_costs(self, response):
+        pass
         hxs = HtmlXPathSelector(response)
         dep = response.meta['dep']
         #FIXME implement me!
-        reg = re.compile('') # model: <td id=prim_col>Emissão Bilhete Aéreo *        <td nowrap><p class=dir>R$ 881,32       <td nowrap><p class=dir>R$ 0,00     <td nowrap><p class=dir>R$ 0,00     <td nowrap><p class=dir>R$ 0,00
+        reg = re.compile('<tr>\s*<td[\s\w=]*>(?P<description>.*?)\s*<td nowrap><p class=dir>R\$\s(?P<gasto2011>.*?)\s*<td') 
         for r in reg.finditer(response.body):
-            dict_assiduidade = r.groupdict()
-            mes, ano = dict_assiduidade['date'].split('/')
-            date = datetime.date(int(ano), int(mes), 1)
-            assiduidade = Assiduidade(dep.id, date, dict_assiduidade['present'], dict_assiduidade['misses'])
-            self.api.inserir_assiduidade(assiduidade)
+            dict_gasto = r.groupdict()
+            gasto = Gasto(dep.id, 2011, dict_gasto['description'], '', Decimal(dict_gasto['gasto2011'].replace('.','').replace(',','.')))
+            self.api.inserir_gasto(gasto)
