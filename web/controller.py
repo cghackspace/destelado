@@ -8,12 +8,12 @@ app = Flask(__name__)
 def root():
     return render_template('index.html')
 
-@app.route("/deputados")
+@app.route("/deputados/")
 def list_deputados():
     deputados = fakeapi.get_deputados()
     return render_template('deputado/list.html', deputados=deputados)
 
-@app.route("/deputados/<int:dep_id>")
+@app.route("/deputados/<int:dep_id>/")
 def get_deputado(dep_id):
     deputado = fakeapi.get_deputado(dep_id)
     if deputado:
