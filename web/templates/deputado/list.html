@@ -22,7 +22,7 @@
 			<td><a href="deputado/{{ deputado.id }}">{{ deputado.nome }}</a></td>
 			<td>{{ deputado.partido }} - {{ deputado.estado }}</td>
 			<td>{{ deputado.gasto }}</td>
-			<td>{{ deputado.assiduidade }}</td>			
+			<td>{{ deputado.total_presencas / (deputado.total_faltas + deputado.total_presencas) }} &#37;</td>			
 		</tr>
 	    {% endfor %}
 	    </table>
