@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Date, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
 
@@ -13,14 +13,25 @@ class Deputado(Base):
     nome = Column(String)
     estado = Column(String)
     partido = Column(String)
+    assiduidades = relationship("Assiduidade")
+    gastos = relationship("Gasto")
 
     def __init__(self, nome, estado, partido):
         self.nome = nome
         self.estado = estado
         self.partido = partido
+    
+    def total_faltas(self):
+        return sum(map(lambda x : x.faltas, self.assiduidades))
+
+    def total_presencas(self):
+        return sum(map(lambda x : x.presencas, self.assiduidades))
+
+    def total_gastos(self):
+        return sum(map(lambda x : x.valor, self.gastos))
 
     def __repr__(self):
-        return "Deputado %d:%s" % (self.id, self.nome)
+        return "Deputado %d:%s" % (self.id, self.nome.encode('utf-8'))
 
 class Assiduidade(Base):
     __tablename__ = 'assiduidade'

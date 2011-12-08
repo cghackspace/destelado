@@ -2,7 +2,7 @@
 
 from entities import Assiduidade, Deputado, Gasto, Base
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 
 class DataAPI(object):
@@ -39,7 +39,7 @@ class DataAPI(object):
     def get_deputados(self, order_by_assiduidade = False):
         return self.__session__.query(Deputado).all()
 
-    def get_deputado_shallow(self, id):
+    def get_deputado(self, id):
         return self.__session__.query(Deputado).get(id)
     
     def get_deputados_por_assiduidade(self):
@@ -58,23 +58,6 @@ class DataAPI(object):
             deputados.append(deputado)
 
         return deputados
-
-    def get_deputado(self, id):
-        deputado = self.__session__.query(Deputado).get(id)
-
-        deputado.assiduidades = self.__session__.query(Assiduidade)\
-                .filter(Assiduidade.id_deputado == id).all()
-
-        deputado.total_presencas = sum(map(lambda x : x.presencas,\
-                deputado.assiduidades))
-
-        deputado.total_faltas = sum(map(lambda x : x.faltas,\
-                deputado.assiduidades))
-
-        deputado.gastos = self.__session__.query(Gasto)\
-                .filter(Gasto.id_deputado == id).all()
-
-        return deputado
 
     def get_deputado_por_nome(self, nome):
         deputado = self.__session__.query(Deputado)\
