@@ -10,9 +10,9 @@ class Deputado(Base):
     __tablename__ = 'deputado'
 
     id = Column(Integer, primary_key = True)
-    nome = Column(String)
-    estado = Column(String)
-    partido = Column(String)
+    nome = Column(String(80))
+    estado = Column(String(2))
+    partido = Column(String(10))
     assiduidades = relationship("Assiduidade")
     gastos = relationship("Gasto")
 
@@ -26,6 +26,9 @@ class Deputado(Base):
 
     def total_presencas(self):
         return sum(map(lambda x : x.presencas, self.assiduidades))
+    
+    def porcentagem_assiduidade(self):
+        return (self.total_presencas() / float(self.total_presencas() + self.total_faltas())) * 100
 
     def total_gastos(self):
         return sum(map(lambda x : x.valor, self.gastos))
@@ -56,8 +59,8 @@ class Gasto(Base):
     id = Column(Integer, primary_key=True)
     id_deputado = Column(Integer, ForeignKey('deputado.id'))
     ano = Column(Numeric)
-    descricao = Column(String)
-    categoria = Column(String)
+    descricao = Column(String(200))
+    categoria = Column(String(80))
     valor = Column(Numeric)
 
     def __init__(self, id_deputado, ano, descricao, categoria, valor):
