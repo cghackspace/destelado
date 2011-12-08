@@ -1,4 +1,4 @@
-from entities import Assiduidade, Deputado, Gasto
+from entities import Assiduidade, Deputado, Gasto, Base
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -7,13 +7,22 @@ class DataAPI(object):
 
     def __init__(self, db_url="sqlite:///test.db"):
         self.__engine__ = create_engine(db_url)
+        Base.metadata.create_all(self.__engine__)
         self.__session__ = sessionmaker(bind = self.__engine__)()
 
     def __validar_deputado__(self, deputado):
         if not deputado.nome : raise "Nome invalido"
         if not deputado.estado : raise "Nome invalido"
         if not deputado.partido : raise "Nome invalido"
+    
+    def __validar_gasto__(self, gasto):
+        if not gasto.id_deputado : raise "Gasto nao associado a um deputado"
+        if not gasto.data : raise "Data invalida"
+        if not gasto.valor : raise "Valor invalido"
+        if not gasto.descricao : raise "Descricao invalido"
+        if not gasto.categoria : raise "Categoria invalida"
        
+
     def get_deputados(self):
         return self.__session__.query(Deputado).all()
 
@@ -26,13 +35,6 @@ class DataAPI(object):
         deputado.assiduidades = self.__session__.query(Assiduidade)\
                 .filter(Assiduidade.id_deputado == id).all()
 
-        # Troquei o sum(map(... por um for, passando de O(4n) para O(2n)
-        deputado.total_presencas = 0
-        deputado.total_faltas = 0
-        for assiduidade : assiduidades:
-            deputado.total_presencas += assiduidade.presencas
-            deputado.total_faltas += assiduidades.faltas
-            
         deputado.total_presencas = sum(map(lambda x : x.presencas,\
                 deputado.assiduidades))
 
@@ -70,7 +72,28 @@ class DataAPI(object):
 
         return deputado
 
-    def registrar_assiduidade(self, assiduidade):
+    def inserir_gasto(self, gasto):
+        self.__validar_gasto__(gasto)
+        
+        self.__session__.add(gasto)
+        self.__session__.commit()
+        
+        return gasto
+    
+    def remover_gasto(self, gasto):
+        self.__session__.delete(gasto)
+        
+        self.__session__.commit()
+    
+    def atualizar_gasto(self, gasto):
+        self.__validar_gasto__(gasto)
+        
+        self.__session__.merge(gasto)
+        self.__session__.commit()
+        
+        return gasto
+
+    def inserir_assiduidade(self, assiduidade):
         self.__session__.add(assiduidade)
         self.__session__.commit()
 
@@ -83,14 +106,5 @@ class DataAPI(object):
         return assiduidade
 
 if __name__ == '__main__':
-    import datetime
-
-    api = DataAPI()
-
-    print api.get_deputados()
-    print api.get_deputado(5).total_presencas
-    print api.get_deputado(5).total_faltas
-    print api.get_deputado_por_nome('Cassio')
-
-    #print api.registrar_assiduidade(Assiduidade(5, datetime.date(2001, 1, 1), 14, 14))
+    print "Nothing to do..."
     
