@@ -12,7 +12,7 @@
 		<h2>{{ deputado.nome }}</h2>
 		<h3>{{ deputado.partido }} - {{ deputado.estado }}</h3>
 		<h5> <strong> Gastos </strong>R&#36; {{ deputado.gasto }}</h5>
-		<h5> <strong> Assiduidade </strong>: {{ deputado.total_presencas / (deputado.total_faltas + deputado.total_presencas) }} &#37;</h5>
+		<h5> <strong> Assiduidade </strong>: {{ deputado.total_presencas * 100 / (deputado.total_faltas + deputado.total_presencas) }} &#37;</h5>
 
 	{% endblock %}
 
