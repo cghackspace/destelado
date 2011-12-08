@@ -26,6 +26,12 @@ class DataAPI(object):
         deputado.assiduidades = self.__session__.query(Assiduidade)\
                 .filter(Assiduidade.id_deputado == id).all()
 
+        deputado.total_presencas = sum(map(lambda x : x.presencas,\
+                deputado.assiduidades))
+
+        deputado.total_faltas = sum(map(lambda x : x.faltas,\
+                deputado.assiduidades))
+
         deputado.gastos = self.__session__.query(Gasto)\
                 .filter(Gasto.id_deputado == id).all()
 
@@ -51,12 +57,6 @@ if __name__ == '__main__':
     api = DataAPI()
 
     print api.get_deputados()
-    print api.get_deputado(5).assiduidades
-    print api.get_deputado(5).gastos
-
-    dep = api.inserir_deputado(Deputado("Cassio", "PB", "Pilantras SA"))
-    print dep
-    dep.partido = "MG"
-    dep = api.atualizar_deputado(dep)
-    print dep
+    print api.get_deputado(5).total_presencas
+    print api.get_deputado(5).total_faltas
     
