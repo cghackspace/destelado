@@ -11,7 +11,7 @@ def root():
 @app.route("/deputados")
 def list_deputados():
     deputados = fakeapi.get_deputados()
-    print deputados
+    return render_template('deputado/list.html', deputados=deputados)
 
 @app.route("/deputados/<id>")
 def get_deputado(dep_id):
