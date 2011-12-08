@@ -1,0 +1,18 @@
+CTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Deputados</title>
+</head>
+<body>
+    <ul id="navigation">
+    {% for deputado in deputados %}
+        <li>
+		<h3><a href="deputado/{{ deputado.id }}">{{ deputado.nome }}</a></h3><br/>
+		<h2>{{ deputado.partido }} - {{ deputado.estado }}</h2>
+	</li>
+    {% endfor %}
+    </ul>
+
+</body>
+</html>
+
