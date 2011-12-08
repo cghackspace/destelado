@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Date, create_engine
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Date, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -26,7 +26,7 @@ class Assiduidade(Base):
     __tablename__ = 'assiduidade'
 
     id_deputado = Column(Integer, ForeignKey('deputado.id'), primary_key = True)
-    data = Column(Date)
+    data = Column(Date, primary_key=True)
     presencas = Column(Integer)
     faltas = Column(Integer)
 
@@ -39,7 +39,15 @@ class Assiduidade(Base):
     def __repr__(self):
         return "Em %s, o deputado %d faltou %d vezes e compareceu %d vezes" % (self.data, self.id_deputado, self.faltas, self.presencas)
 
-class Gasto(object):
+class Gasto(Base):
+    __tablename__ = 'gasto'
+
+    id = Column(Integer, primary_key=True)
+    id_deputado = Column(Integer, ForeignKey('deputado.id'))
+    data = Column(Date)
+    descricao = Column(String)
+    categoria = Column(String)
+    valor = Column(Numeric)
 
     def __init__(self, id_deputado, data, descricao, categoria, valor):
         self.id_deputado = id_deputado
@@ -47,6 +55,9 @@ class Gasto(object):
         self.descricao = descricao
         self.categoria = categoria
         self.valor = valor
+
+    def __repr__(self):
+        return 'Na categoria %s o deputado %d gastou R$%.2f em %s' % (self.categoria, self.id_deputado, self.valor, self.data)
 
 if __name__ == '__main__':
     some_engine = create_engine('sqlite:///test.db')
@@ -63,6 +74,8 @@ if __name__ == '__main__':
 
     assiduidade = Assiduidade(0, datetime.date(2011, 1, 1), 10, 20)
 
+    gasto = Gasto(0, datetime.date(2011, 1, 1), 'Passeio com a familia', 'Viagem', 1500.45)
+
     session.add(dep)
     session.commit()
 
@@ -70,5 +83,10 @@ if __name__ == '__main__':
     session.add(assiduidade)
     session.commit()
 
+    gasto.id_deputado = dep.id
+    session.add(gasto)
+    session.commit()
+
     print session.query(Deputado).all()
     print session.query(Assiduidade).all()
+    print session.query(Gasto).all()
