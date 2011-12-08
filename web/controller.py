@@ -13,9 +13,14 @@ def list_deputados():
     deputados = fakeapi.get_deputados()
     return render_template('deputado/list.html', deputados=deputados)
 
-@app.route("/deputados/<id>")
+@app.route("/deputados/<int:dep_id>")
 def get_deputado(dep_id):
-    pass
+    deputado = fakeapi.get_deputado(dep_id)
+    if deputado:
+      return render_template('deputado/show.html', deputado=deputado)
+    else:
+      #TODO check if this is correct
+      abort(404)
 
 if __name__ == "__main__":
     app.run( debug = True )
