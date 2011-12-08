@@ -24,7 +24,7 @@ class DataAPI(object):
         if not deputado.estado : raise "Nome inválido"
         if not deputado.partido : raise "Nome inválido"
     
-    def __validar_gasto__(self, assiduidade):
+    def __validar_assiduidade__(self, assiduidade):
         if not assiduidade.id_deputado : raise "Assiduidade não associada a um deputado"
         if not assiduidade.data : raise "Data inválida"
         if not assiduidade.presencas : raise "Presenças inválida"
