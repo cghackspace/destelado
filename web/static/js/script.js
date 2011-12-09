@@ -1,4 +1,5 @@
 $(function() {
+    // used on /deputados
     $("table").tablesorter({ 
         textExtraction: function(node) {
             switch(node.className) {
@@ -13,4 +14,12 @@ $(function() {
             }
         } 
     });
+
+    // used on /deputados to filter deputies
+    $('table').tableFilter({
+        filters: {
+            party: $('#party'),
+            state: $('#state')
+        }
+    }); 
 });

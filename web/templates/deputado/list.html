@@ -2,6 +2,65 @@
 
 {% block content %}
     <h2>Lista de deputados</h2>
+    <p>Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
+    
+    <select id="state">
+        <option selected>Todos os estados</option>
+        <option>AC</option>
+        <option>AL</option>
+        <option>AM</option>
+        <option>AP</option>
+        <option>BA</option>
+        <option>CE</option>
+        <option>DF</option>
+        <option>ES</option>
+        <option>GO</option>
+        <option>MA</option>
+        <option>MG</option>
+        <option>MS</option>
+        <option>MT</option>
+        <option>PA</option>
+        <option>PB</option>
+        <option>PE</option>
+        <option>PI</option>
+        <option>PR</option>
+        <option>RJ</option>
+        <option>RN</option>
+        <option>RO</option>
+        <option>RR</option>
+        <option>RS</option>
+        <option>SC</option>
+        <option>SE</option>
+        <option>SP</option>
+        <option>TO</option>
+    </select>
+
+    <select id="party">
+        <option selected>Todos os partidos</option>
+        <option>DEM</option>
+        <option>PC do B</option>
+        <option>PDT</option>
+        <option>PHS</option>
+        <option>PMDB</option>
+        <option>PMN</option>
+        <option>PP</option>
+        <option>PPS</option>
+        <option>PR</option>
+        <option>PRB</option>
+        <option>PRP</option>
+        <option>PRTB</option>
+        <option>PSB</option>
+        <option>PSC</option>
+        <option>PSD</option>
+        <option>PSDB</option>
+        <option>PSOL</option>
+        <option>PT</option>
+        <option>PT do B</option>
+        <option>PTB</option>
+        <option>PTC</option>
+        <option>PV</option>
+    </select>
+    
     <table class="zebra-striped">
         <thead>
             <tr>
@@ -14,9 +73,9 @@
         <tbody>
         {% for deputado in deputados %}
             <tr>
-                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.nome }}</a></td>
-                <td>{{ deputado.partido }} - {{ deputado.estado }}</td>
-                <td class="frequency"><strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</td>  
+                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.id }}</a></td>
+                <td class="state party">{{ deputado.partido }} - {{ deputado.estado }}</td>
+                <td class="frequency"><strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</td>
                 <td>{{ deputado.total_gastos() }}</td>
             </tr>
         {% endfor %}
@@ -26,5 +85,20 @@
 
 {% block scripts_libs %}
 <script src="/static/js/libs/jquery.tablesorter.min.js"></script>
+{% endblock %}
+
+
+
+
+                <td>{{ "%.2f" % deputado.total_gastos() }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block scripts_libs %}
+<script src="/static/js/libs/jquery.tablesorter.min.js"></script>
+<script src="/static/js/plugins.js"></script>
 {% endblock %}
 
