@@ -28,7 +28,10 @@ class Deputado(Base):
         return sum(map(lambda x : x.presencas, self.assiduidades))
     
     def porcentagem_assiduidade(self):
-        return (self.total_presencas() / float(self.total_presencas() + self.total_faltas())) * 100
+        if (self.total_presencas() != 0 and self.total_faltas != 0):
+            return (self.total_presencas() / float(self.total_presencas() + self.total_faltas())) * 100
+        else:
+            return None
 
     def total_gastos(self):
         return sum(map(lambda x : x.valor, self.gastos))
