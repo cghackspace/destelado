@@ -1,10 +1,12 @@
 import datetime
+import locale
 
 from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Date, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
+locale.setlocale( locale.LC_ALL, 'pt_BR.utf8' )
 
 class Deputado(Base):
     __tablename__ = 'deputado'
@@ -28,7 +30,7 @@ class Deputado(Base):
         return sum(map(lambda x : x.presencas, self.assiduidades))
     
     def porcentagem_assiduidade(self):
-        if (self.total_presencas() != 0 and self.total_faltas != 0):
+        if (self.total_presencas() != 0):
             return (self.total_presencas() / float(self.total_presencas() + self.total_faltas())) * 100
         else:
             return None
@@ -37,8 +39,6 @@ class Deputado(Base):
         return sum(map(lambda x : x.valor, self.gastos))
     
     def total_gastos_str(self):
-        import locale
-        locale.setlocale( locale.LC_ALL, 'pt_BR.utf8' )
         return locale.currency( self.total_gastos(), grouping=True )
 
     def __repr__(self):
@@ -57,6 +57,12 @@ class Assiduidade(Base):
         self.data = data
         self.presencas = presencas
         self.faltas = faltas
+    
+    def porcentagem(self):
+        if (self.presencas != 0):
+            return (self.presencas / float(self.presencas + self.faltas)) * 100
+        else:
+            return None
 
     def __repr__(self):
         return "Em %s, o deputado %d faltou %d vezes e compareceu %d vezes" % (self.data, self.id_deputado, self.faltas, self.presencas)
@@ -77,6 +83,9 @@ class Gasto(Base):
         self.descricao = descricao
         self.categoria = categoria
         self.valor = valor
+
+    def valor_str(self):
+        return locale.currency( self.valor, grouping=True )
 
     def __repr__(self):
         return 'Na categoria %s o deputado %d gastou R$%.2f em %s' % (self.categoria, self.id_deputado, self.valor, self.ano)
