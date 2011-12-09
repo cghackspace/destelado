@@ -1,14 +1,64 @@
 {% extends "template.html" %}
 {% block title %}Informações sobre {{ deputado.nome.decode('iso-8859-1') }}{% endblock %}
 {% block content %}
-    <h2>{{ deputado.nome.decode('iso-8859-1') }}</h2>
+    <h2>{{ deputado.nome.decode('iso-8859-1') }} ({{ deputado.partido }} - {{ deputado.estado }})</h2>
 
-    <!-- detalhar assiduidade e gastos! -->
-    {{ deputado.partido }} - {{ deputado.estado }}
-    {% if deputado.porcentagem_assiduidade() != None %}
-    <strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})
-    {% else %}
-    <td>-</td>
-    {% endif %}
-    {{ deputado.total_gastos() }}
+    <section>
+        <h3>Assiduidade</h3>
+        {% if deputado.porcentagem_assiduidade() != None %}
+        <p>Média: <strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</p>
+        {% else %}
+        -
+        {% endif %}
+        <table class="zebra-striped">
+            <thead>
+                <tr>
+                    <th class="green header">Mês/Ano</th>
+                    <th class="yellow header">Presenças</th>
+                    <th class="blue header">Faltas</th>
+                    <th class="red header">Assiduidade</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for assiduidade in deputado.assiduidades %}
+                <tr>
+                    <td>{{ "%2d" % assiduidade.data.month }}/{{ assiduidade.data.year }}</td>
+                    <td>{{ assiduidade.presencas }}</td>
+                    <td>{{ assiduidade.faltas }}</td>
+                    {% if assiduidade.porcentagem() != None %}
+                    <td>{{ "%.2f" % assiduidade.porcentagem() }}%</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h3>Gastos</h3>
+        <p>Total: <strong>{{ deputado.total_gastos_str() }}</strong></p>
+        {% if deputado.total_gastos() > 0 %}
+        <table class="zebra-striped">
+            <thead>
+                <tr>
+                    <th class="green header">Descrição</th>
+                    <th class="red header">Valor (2011)</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for gasto in deputado.gastos %}
+                <tr>
+                    <td>{{ gasto.descricao.decode('iso-8859-1') }}</td>
+                    <td class="cost">{{ gasto.valor_str() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+{% endblock %}
+
+{% block scripts_libs %}
+<script src="/static/js/libs/jquery.tablesorter.min.js"></script>
 {% endblock %}
