@@ -35,6 +35,11 @@ class Deputado(Base):
 
     def total_gastos(self):
         return sum(map(lambda x : x.valor, self.gastos))
+    
+    def total_gastos_str(self):
+        import locale
+        locale.setlocale( locale.LC_ALL, 'pt_BR.utf8' )
+        return locale.currency( self.total_gastos(), grouping=True )
 
     def __repr__(self):
         return "Deputado %d:%s" % (self.id, self.nome.encode('utf-8'))
