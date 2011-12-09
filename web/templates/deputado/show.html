@@ -1,29 +1,14 @@
 {% extends "template.html" %}
+{% block title %}Informações sobre {{ deputado.nome.decode('iso-8859-1') }}{% endblock %}
+{% block content %}
+    <h2>{{ deputado.nome.decode('iso-8859-1') }}</h2>
 
-<CTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="pt">
-<head>
-    <title>{{ deputado.nome }}</title>
-</head>
-<body>
-
-	{% block content %}
-
-		<h2>{{ deputado.nome.decode('iso-8859-1') }}</h2>
-
-
-		<!-- detalhar assiduidade e gastos! -->
-		{{ deputado.nome.decode('iso-8859-1') }}
-        {{ deputado.partido }} - {{ deputado.estado }}
-        {% if deputado.porcentagem_assiduidade() != None %}
-        <strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})
-        {% else %}
-        <td>-</td>
-        {% endif %}
-        {{ deputado.total_gastos() }}
-	{% endblock %}
-
-
-</body>
-</html>
-
+    <!-- detalhar assiduidade e gastos! -->
+    {{ deputado.partido }} - {{ deputado.estado }}
+    {% if deputado.porcentagem_assiduidade() != None %}
+    <strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})
+    {% else %}
+    <td>-</td>
+    {% endif %}
+    {{ deputado.total_gastos() }}
+{% endblock %}
