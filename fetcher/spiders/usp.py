@@ -76,6 +76,6 @@ class FaultsSpider(BaseSpider):
         reg = re.compile('<tr>\s*<td[\s\w=]*>(?P<description>.*?)\s*<td nowrap><p class=dir>R\$\s(?P<gasto2011>.*?)\s*<td') 
         for r in reg.finditer(response.body):
             dict_gasto = r.groupdict()
-            gasto = Gasto(dep.id, 2011, dict_gasto['description'], '', Decimal(dict_gasto['gasto2011'].replace('.','').replace(',','.')))
+            gasto = Gasto(dep.id, 2011, dict_gasto['description'].decode('iso-8859-1'), '', Decimal(dict_gasto['gasto2011'].replace('.','').replace(',','.')))
             if gasto.valor:
                 self.api.inserir_gasto(gasto)
