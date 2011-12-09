@@ -25,7 +25,7 @@ def get_deputado(dep_id):
       abort(404)
 
 @app.route("/sobre/")
-def list_deputados():
+def show_about():
     return render_template('about.html')
 
 if __name__ == "__main__":
