@@ -22,7 +22,7 @@ class FaultsSpider(BaseSpider):
     allowed_domains = ['excelencias.org.br']
     start_urls = ['http://www.excelencias.org.br/@busca.php?nome=%20Nome%20(ou%20parte)']
     base_url = 'http://www.excelencias.org.br'
-    api = DataAPI("mysql://root:010203@localhost:3306/destelado")
+    api = DataAPI()
 
     def parse(self, response):
         hxs = HtmlXPathSelector(response)
