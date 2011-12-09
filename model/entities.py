@@ -61,7 +61,7 @@ class Gasto(Base):
     ano = Column(Numeric)
     descricao = Column(String(200))
     categoria = Column(String(80))
-    valor = Column(Numeric)
+    valor = Column(Numeric(12, 2))
 
     def __init__(self, id_deputado, ano, descricao, categoria, valor):
         self.id_deputado = id_deputado
