@@ -9,11 +9,18 @@
 
 	{% block content %}
 
-		<h2>{{ deputado.nome }}</h2>
-		<h3>{{ deputado.partido }} - {{ deputado.estado }}</h3>
-		<h5> <strong> Gastos </strong>R&#36; {{ deputado.gasto }}</h5>
-		<h5> <strong> Assiduidade </strong>: {{ deputado.total_presencas * 100 / (deputado.total_faltas + deputado.total_presencas) }} &#37;</h5>
+		<h2>{{ deputado.nome.decode('iso-8859-1') }}</h2>
 
+
+		<!-- detalhar assiduidade e gastos! -->
+		{{ deputado.nome.decode('iso-8859-1') }}
+        {{ deputado.partido }} - {{ deputado.estado }}
+        {% if deputado.porcentagem_assiduidade() != None %}
+        <strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})
+        {% else %}
+        <td>-</td>
+        {% endif %}
+        {{ deputado.total_gastos() }}
 	{% endblock %}
 
 

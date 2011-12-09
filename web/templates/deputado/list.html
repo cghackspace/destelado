@@ -73,24 +73,14 @@
         <tbody>
         {% for deputado in deputados %}
             <tr>
-                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.id }}</a></td>
+                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.nome.decode('iso-8859-1') }}</a></td>
                 <td class="state party">{{ deputado.partido }} - {{ deputado.estado }}</td>
+                {% if deputado.porcentagem_assiduidade() != None %}
                 <td class="frequency"><strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</td>
+                {% else %}
+                <td>-</td>
+                {% endif %}
                 <td>{{ deputado.total_gastos() }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
-
-{% block scripts_libs %}
-<script src="/static/js/libs/jquery.tablesorter.min.js"></script>
-{% endblock %}
-
-
-
-
-                <td>{{ "%.2f" % deputado.total_gastos() }}</td>
             </tr>
         {% endfor %}
         </tbody>
