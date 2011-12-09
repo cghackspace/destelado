@@ -24,5 +24,9 @@ def get_deputado(dep_id):
       #TODO check if this is correct
       abort(404)
 
+@app.route("/sobre/")
+def list_deputados():
+    return render_template('about.html')
+
 if __name__ == "__main__":
     app.run( debug = True )
