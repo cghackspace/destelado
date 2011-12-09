@@ -71,7 +71,7 @@ class FaultsSpider(BaseSpider):
         pass
         hxs = HtmlXPathSelector(response)
         dep = response.meta['dep']
-        reg = re.compile('<tr>\s*<td[\s\w=]*>(?P<description>.*?)\s*<td nowrap><p class=dir>R\$\s(?P<gasto2011>.*?)\s*<td', flags=re.U) 
+        reg = re.compile('<tr>\s*<td[\s\w=]*>(?P<description>.*?)\s*<td nowrap><p class=dir>R\$\s(?P<gasto2011>.*?)\s*<td', flags=re.U)
         for r in reg.finditer(response.body):
             dict_gasto = r.groupdict()
             gasto = Gasto(dep.id, 2011, dict_gasto['description'].decode('iso-8859-1'), '', Decimal(dict_gasto['gasto2011'].replace('.','').replace(',','.')))
