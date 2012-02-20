@@ -1,0 +1,28 @@
+Destelado is an open data application. The first step here is to create crawlers for some (why not all) political related data from Brazil. We aim to reorganize the data collections using a consistent and open pattern together with a programatic API and a web portal.
+
+How to run it?
+
+  * (The instructions here are for a Linux env... If you like other environment, you should know how to translate it!)
+  * This is a Python application, so you'll need it, and other related tools.
+  * Download the code... (wow, don't tell me that!)
+  * This is not absolutly necessary, but we recommend you to use a virtualenv:
+    * Create one: virtualenv ~/.my_envs/destelado (you can freely choose the folder)
+    * Activate it: source ~/.my_envs/destelado/bin/activate
+
+Install dependencies:
+  * To build bellow libraries, you'll need to install: python-dev; libxml2-dev; and libxslt1-dev.
+  * (From now on you should be inside destelado's folder!)
+  * pip install -r requirements.txt
+
+We have a first example of destelado's work. To get brazilian deputies spending and assiduity you should: 
+  * Scrapt site; execute: scrapy crawl faults
+    * (UPS! depending on your installed system, you will need to install the Portuguese language package: language-pack-pt.)
+  * Navigate data: 
+    * add destelado's path to the Python's libraries: export PYTHONPATH=$PYTHONPATH:.
+    * run test server: python web/conttroller.py
+    * access it in your browser: http://localhost:5000
+
+SMILE! ;)
+
+AUTHORS:
+@cghackspace

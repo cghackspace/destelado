@@ -1,7 +1,0 @@
-Install fucking scrapy (easy_install)
-
-Run with:
-
-  scrapy crawl faults
-
-Should create a items.json with the faults for PB
