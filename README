@@ -5,7 +5,7 @@ How to run it?
   * (The instructions here are for a Linux env... If you like other environment, you should know how to translate it!)
   * This is a Python application, so you'll need it, and other related tools.
   * Download the code... (wow, don't tell me that!)
-  * This is not absolutly necessary, but we recommend you to use a virtualenv:
+  * This is not absolutely necessary, but we recommend you to use a virtualenv:
     * Create one: virtualenv ~/.my_envs/destelado (you can freely choose the folder)
     * Activate it: source ~/.my_envs/destelado/bin/activate
 
