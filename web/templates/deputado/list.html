@@ -73,7 +73,7 @@
         <tbody>
         {% for deputado in deputados %}
             <tr>
-                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.nome.decode('iso-8859-1') }}</a></td>
+                <td class="name"><a href="/deputados/{{ deputado.id }}">{{ deputado.nome }}</a></td>
                 <td class="state party">{{ deputado.partido }} - {{ deputado.estado }}</td>
                 {% if deputado.porcentagem_assiduidade() != None %}
                 <td class="frequency"><strong>{{ "%.2f" % deputado.porcentagem_assiduidade() }}%</strong> ({{ deputado.total_presencas() }} / {{ deputado.total_faltas() + deputado.total_presencas() }})</td>

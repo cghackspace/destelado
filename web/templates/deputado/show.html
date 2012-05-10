@@ -1,7 +1,7 @@
 {% extends "template.html" %}
-{% block title %}Informações sobre {{ deputado.nome.decode('iso-8859-1') }}{% endblock %}
+{% block title %}Informações sobre {{ deputado.nome }}{% endblock %}
 {% block content %}
-    <h2>{{ deputado.nome.decode('iso-8859-1') }} ({{ deputado.partido }} - {{ deputado.estado }})</h2>
+    <h2>{{ deputado.nome }} ({{ deputado.partido }} - {{ deputado.estado }})</h2>
 
     <section>
         <h3>Assiduidade</h3>
@@ -50,7 +50,7 @@
             <tbody>
             {% for gasto in deputado.gastos %}
                 <tr>
-                    <td>{{ gasto.descricao.decode('iso-8859-1') }}</td>
+                    <td>{{ gasto.descricao }}</td>
                     <td class="cost">{{ gasto.valor_str() }}</td>
                 </tr>
             {% endfor %}
